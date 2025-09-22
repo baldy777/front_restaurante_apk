@@ -14,7 +14,7 @@ class _MyWidgetState extends State<MyWidget> {
     return Scaffold(
       
       appBar: AppBar(
-        title: Text("Crea una cuenta", style: TextStyle(fontFamily: "arial")),
+        title: Text("", style: TextStyle(fontFamily: "arial")),
         backgroundColor: const Color.fromARGB(255, 236, 230, 225),
       ),
       backgroundColor: const Color.fromARGB(255, 236, 230, 225),
@@ -22,7 +22,7 @@ class _MyWidgetState extends State<MyWidget> {
         child: Column(
           children: [
             //ver como poner una barra inferior donde estaran las opciones de la app
-            
+
             //hay que posicionar el boton, el boton es para agregar pedidos
             SizedBox(height: 20),
             ElevatedButton(
