@@ -64,8 +64,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 border: OutlineInputBorder(),
               ),
             ),
-
-            // 🔹 Dropdown de Sexo
             SizedBox(height: 20),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
@@ -74,7 +72,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              value: _sexoSeleccionado,
+              initialValue: _sexoSeleccionado,
               items: _sexos.map((sexo) {
                 return DropdownMenuItem(
                   value: sexo,
@@ -97,7 +95,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              value: _paisSeleccionado,
+              initialValue: _paisSeleccionado,
               items: _paises.map((pais) {
                 return DropdownMenuItem(
                   value: pais,
