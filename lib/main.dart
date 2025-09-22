@@ -12,15 +12,15 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'App Restaurante',
+      theme: ThemeData(primarySwatch: Colors.red),
+
       routes: {
-        '/' 
         '/login': (context) => const LoginForm(),
-        '/register': (context) => RegisterForm(), // Define RegisterForm in register.dart
+        '/register': (context) => RegisterForm(),
       },
-      initialRoute: '/login',
-      home: const Scaffold(
-        body: LoginForm(),
-      ),
+      initialRoute: '/login', 
     );
   }
 }
