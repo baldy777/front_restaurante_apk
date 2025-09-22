@@ -1,3 +1,5 @@
+import 'package:app_movil/pages/login.dart';
+import 'package:app_movil/pages/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,11 +11,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      routes: {
+        '/' 
+        '/login': (context) => const LoginForm(),
+        '/register': (context) => RegisterForm(), // Define RegisterForm in register.dart
+      },
+      initialRoute: '/login',
+      home: const Scaffold(
+        body: LoginForm(),
       ),
     );
   }
