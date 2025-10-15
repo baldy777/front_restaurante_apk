@@ -9,10 +9,10 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  String? _sexoSeleccionado;
+  // String? _sexoSeleccionado;
   String? _paisSeleccionado;
 
-  final List<String> _sexos = ["Masculino", "Femenino", "Otro"];
+  // final List<String> _sexos = ["Masculino", "Femenino", "Otro"];
   final List<String> _paises = ["Bolivia", "Argentina", "Chile", "Perú"];
 
   @override
@@ -64,24 +64,24 @@ class _RegisterFormState extends State<RegisterForm> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: "Sexo",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              initialValue: _sexoSeleccionado,
-              items: _sexos.map((sexo) {
-                return DropdownMenuItem(value: sexo, child: Text(sexo));
-              }).toList(),
-              onChanged: (valor) {
-                setState(() {
-                  _sexoSeleccionado = valor;
-                });
-              },
-            ),
+            // SizedBox(height: 20),
+            // DropdownButtonFormField<String>(
+            //   decoration: InputDecoration(
+            //     labelText: "Sexo",
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(20),
+            //     ),
+            //   ),
+            //   initialValue: _sexoSeleccionado,
+            //   items: _sexos.map((sexo) {
+            //     return DropdownMenuItem(value: sexo, child: Text(sexo));
+            //   }).toList(),
+            //   onChanged: (valor) {
+            //     setState(() {
+            //       _sexoSeleccionado = valor;
+            //     });
+            //   },
+            // ),
 
             // 🔹 Dropdown de País
             SizedBox(height: 20),
