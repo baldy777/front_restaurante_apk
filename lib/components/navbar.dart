@@ -1,4 +1,9 @@
 import 'package:app_movil/core/colores_style.dart';
+import 'package:app_movil/pages/main_page.dart';
+import 'package:app_movil/pages/productos/menu.dart';
+import 'package:app_movil/pages/productos/pedidos.dart';
+import 'package:app_movil/pages/usuarios/perfil.dart';
+import 'package:app_movil/pages/usuarios/tabla_empleados.dart';
 import 'package:flutter/material.dart';
 
 class Navbar extends StatefulWidget {
@@ -11,12 +16,12 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const Center(child: Text('Inicio')),
-    const Center(child: Text('Pedidos')),
-    const Center(child: Text('Menu')),
-    const Center(child: Text('Empleados')),
-    const Center(child: Text('Perfil')),
+  final List<Widget> _pages = const [
+    MenuPrincipal(),
+    PedidosDiarioVista(),
+    MenuVista(),
+    EmpleadosVista(),
+    UserPerfilVista(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,15 +37,17 @@ class _NavbarState extends State<Navbar> {
       appBar: AppBar(
         backgroundColor: ColoresStyle.encabezado,
         title: const Text(
-          "Menú Principal",
+          "Restaurante App",
           style: TextStyle(
             fontFamily: "arial",
             fontSize: 22,
             color: Colors.white,
           ),
         ),
+
         centerTitle: true,
       ),
+
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
