@@ -13,7 +13,9 @@ class _NavbarState extends State<Navbar> {
 
   final List<Widget> _pages = [
     const Center(child: Text('Inicio')),
-    const Center(child: Text('Materiales')),
+    const Center(child: Text('Pedidos')),
+    const Center(child: Text('Menu')),
+    const Center(child: Text('Empleados')),
     const Center(child: Text('Perfil')),
   ];
 
@@ -49,7 +51,9 @@ class _NavbarState extends State<Navbar> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Materiales'),
+          BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Pedidos'),
+          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: 'Menu'),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Empleados'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
