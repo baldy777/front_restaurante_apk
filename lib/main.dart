@@ -1,3 +1,4 @@
+import 'package:app_movil/components/navbar.dart';
 import 'package:app_movil/pages/usuarios/login.dart';
 import 'package:app_movil/pages/usuarios/register.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginForm(),
         '/register': (context) => RegisterForm(),
+        '/navbar': (context) => const Navbar(),
       },
       initialRoute: '/login', 
     );

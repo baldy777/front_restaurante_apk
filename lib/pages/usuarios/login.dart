@@ -41,7 +41,7 @@ class LoginForm extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/main_page');
+                  Navigator.pushNamed(context, '/navbar');
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(ColoresStyle.acento), 
