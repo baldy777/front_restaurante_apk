@@ -1,5 +1,5 @@
-import 'package:app_movil/pages/login.dart';
-import 'package:app_movil/pages/register.dart';
+import 'package:app_movil/pages/usuarios/login.dart';
+import 'package:app_movil/pages/usuarios/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
