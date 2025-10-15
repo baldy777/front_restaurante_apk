@@ -1,24 +1,20 @@
+import 'package:app_movil/core/colores_style.dart';
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class EmpleadosVista extends StatefulWidget {
+  const EmpleadosVista({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<EmpleadosVista> createState() => _EmpleadosVistaState();
 }
 
-//falta enrutar en el main.dart y en opciones de la tabla_menu.dart
-class _MyWidgetState extends State<MyWidget> {
+class _EmpleadosVistaState extends State<EmpleadosVista> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(child: Text("Tabla de Empleados")),
-          ],
-        ),
+return const Center(
+      child: Text(
+        'Gestión de empleados 👥',
+        style: TextoStyle.contenido,
       ),
-    );
-  }
+    );  }
 }

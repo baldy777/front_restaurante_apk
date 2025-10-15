@@ -1,15 +1,18 @@
+import 'package:app_movil/core/colores_style.dart';
 import 'package:flutter/material.dart';
 
-class MenuRestaurante extends StatefulWidget {
-  const MenuRestaurante({super.key});
+class MenuVista extends StatefulWidget {
+  const MenuVista({super.key});
 
   @override
-  State<MenuRestaurante> createState() => _MenuRestauranteState();
+  State<MenuVista> createState() => _MenuVistaState();
 }
 
-class _MenuRestauranteState extends State<MenuRestaurante> {
+class _MenuVistaState extends State<MenuVista> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(
+      child: Text('Gestión del menu 🍽️', style: TextoStyle.contenido),
+    );
   }
 }
