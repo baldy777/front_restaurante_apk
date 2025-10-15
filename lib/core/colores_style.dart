@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class ColoresStyle {
 
@@ -11,23 +11,7 @@ class ColoresStyle {
 }
 
 class TextoStyle {
-  static final TextStyle titulo = TextStyle(
-    fontFamily: "arial",
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    color: const Color(0xFF5A3E2B),
-  );
+  static const TextStyle titulo = TextStyle(color: Color(0xFFF6F1EB), fontSize: 18);
 
-  static final TextStyle subtitulo = TextStyle(
-    fontFamily: "arial",
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    color: const Color(0xFF7B8C38),
-  );
 
-  static  TextStyle cuerpo = TextStyle(
-    fontFamily: "arial",
-    fontSize: 14,
-    color: Color(0xFF2E2E2E),
-  );
 }

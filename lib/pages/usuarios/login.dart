@@ -40,16 +40,22 @@ class LoginForm extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/main_page');
                 },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.deepOrangeAccent),
+                  backgroundColor: WidgetStateProperty.all(ColoresStyle.acento), 
                   padding: WidgetStateProperty.all(
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  ),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), 
+                    ),
                   ),
                 ),
                 child: Text(
                   "Iniciar Sesión",
-                  style: TextoStyle.cuerpo as TextStyle?,
+                  style: TextoStyle.titulo
                 ),
               ),
 
