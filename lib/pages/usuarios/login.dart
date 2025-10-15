@@ -47,13 +47,9 @@ class LoginForm extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "Iniciar Sesión",
-                  style: TextStyle(
-                    fontFamily: "arial",
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 236, 230, 225),
-                  ),
+                  style: TextoStyle.cuerpo as TextStyle?,
                 ),
               ),
 

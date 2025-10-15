@@ -8,10 +8,26 @@ class ColoresStyle {
   static const Color acento = Color(0xFF5A3E2B);
   static const Color detalles = Color(0xFFA8B59E);
 
-  //estilos de texto
-  static final TextStyle texto = TextStyle(
+}
+
+class TextoStyle {
+  static final TextStyle titulo = TextStyle(
+    fontFamily: "arial",
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: const Color(0xFF5A3E2B),
+  );
+
+  static final TextStyle subtitulo = TextStyle(
     fontFamily: "arial",
     fontSize: 18,
-    color: const Color.fromARGB(255, 236, 230, 225),
+    fontWeight: FontWeight.w600,
+    color: const Color(0xFF7B8C38),
+  );
+
+  static  TextStyle cuerpo = TextStyle(
+    fontFamily: "arial",
+    fontSize: 14,
+    color: Color(0xFF2E2E2E),
   );
 }
