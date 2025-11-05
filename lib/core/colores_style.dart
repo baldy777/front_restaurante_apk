@@ -11,7 +11,9 @@ class ColoresStyle {
 class TextoStyle {
   static const TextStyle titulo = TextStyle(
     color: Color(0xFFF6F1EB),
-    fontSize: 18,
+    fontSize: 24,
+    fontFamily: 'arial',
+    fontWeight: FontWeight.bold
   );
   static const TextStyle contenido = TextStyle(
     color: Color(0xFF2E2E2E),
