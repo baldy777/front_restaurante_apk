@@ -9,11 +9,12 @@ class EmpleadosVista extends StatefulWidget {
 }
 
 class _EmpleadosVistaState extends State<EmpleadosVista> {
-  // Lista temporal de empleados (puedes reemplazarla luego con datos de tu backend)
   final List<Map<String, String>> empleados = [
     {"nombre": "Carlos Pérez", "cargo": "Cocinero", "telefono": "71234567"},
     {"nombre": "Ana López", "cargo": "Mesera", "telefono": "74589632"},
     {"nombre": "Luis Gómez", "cargo": "Repartidor", "telefono": "75678901"},
+    {"nombre": "María Torres", "cargo": "Gerente", "telefono": "78901234"},
+    {"nombre": "Jorge Rojas", "cargo": "Mesero", "telefono": "79876543"},
   ];
 
   @override
@@ -25,59 +26,78 @@ class _EmpleadosVistaState extends State<EmpleadosVista> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Gestión de empleados 👥',
-              style: TextoStyle.contenido,
-            ),
+            const Text('Gestión de empleados 👥', style: TextoStyle.contenido),
             const SizedBox(height: 20),
 
-            // Tabla
+            // Grid de empleados (2 por fila)
             Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  headingRowColor: WidgetStateProperty.all(ColoresStyle.encabezado),
-                  dataRowColor: WidgetStateProperty.resolveWith(
-                    (states) => states.contains(WidgetState.selected)
-                        // ignore: deprecated_member_use
-                        ? ColoresStyle.acento.withOpacity(0.2)
-                        : ColoresStyle.fondo,
-                  ),
-                  headingTextStyle: TextoStyle.titulo,
-                  columns: const [
-                    DataColumn(label: Text('Nombre')),
-                    DataColumn(label: Text('Cargo')),
-                    DataColumn(label: Text('Teléfono')),
-                    DataColumn(label: Text('Acciones')),
-                  ],
-                  rows: empleados.map((empleado) {
-                    return DataRow(cells: [
-                      DataCell(Text(empleado['nombre']!)),
-                      DataCell(Text(empleado['cargo']!)),
-                      DataCell(Text(empleado['telefono']!)),
-                      DataCell(Row(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 1,
+                children: empleados.map((empleado) {
+                  return Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {
-                              // Acción editar
-                            },
+                          const Icon(Icons.person, size: 40, color: Colors.orangeAccent),
+                          Text(
+                            empleado['nombre']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              // Acción eliminar
-                            },
+                          Text(
+                            empleado['cargo']!,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            "Tel: ${empleado['telefono']}",
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit, color: Colors.blue),
+                                onPressed: () {
+                                  // Acción editar
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  // Acción eliminar
+                                },
+                              ),
+                            ],
                           ),
                         ],
-                      )),
-                    ]);
-                  }).toList(),
-                ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
 
             const SizedBox(height: 20),
+
             // Botón para agregar nuevo empleado
             Center(
               child: ElevatedButton.icon(
