@@ -1,16 +1,49 @@
-
-import 'package:app_movil/core/colores_style.dart';
 import 'package:flutter/material.dart';
+import 'package:app_movil/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_movil/core/colores_style.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final TextEditingController correoCtrl = TextEditingController();
+  final TextEditingController contrasenaCtrl = TextEditingController();
+  final AuthService authService = AuthService();
+
+  Future<void> iniciarSesion() async {
+    print("Iniciando sesión ======================================");
+    print("correro recibido: ${correoCtrl.text}");
+    print("contrasena recibida: ${contrasenaCtrl.text}");
+
+    final correo = correoCtrl.text.trim();
+    final contrasena = contrasenaCtrl.text.trim();
+
+    final respuesta = await authService.login(correo, contrasena);
+
+    print("respuesta del login: $respuesta");
+
+    if (respuesta != null && respuesta['token'] != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', respuesta['token']);
+      Navigator.pushReplacementNamed(context, '/navbar');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Correo o contraseña incorrectos")),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       backgroundColor: ColoresStyle.fondo,
       body: Center(
-        child: SingleChildScrollView( 
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -21,60 +54,34 @@ class LoginForm extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Nombre de Usuario',
+              TextField(
+                controller: correoCtrl,
+                decoration: const InputDecoration(
+                  hintText: 'Correo',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-
-              const TextField(
+              TextField(
+                controller: contrasenaCtrl,
                 obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Ingrese su Contraseña',
+                decoration: const InputDecoration(
+                  hintText: 'Contraseña',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/navbar');
-                },
+                onPressed: iniciarSesion,
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(ColoresStyle.acento), 
-                  padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  ),
-                  shape: WidgetStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), 
-                    ),
-                  ),
+                  backgroundColor: WidgetStateProperty.all(ColoresStyle.acento),
                 ),
-                child: Text(
-                  "Iniciar Sesión",
-                  style: TextoStyle.titulo
-                ),
+                child: const Text("Iniciar Sesión"),
               ),
-
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: const Text(
-                  "¿No estás registrado? Crea una cuenta",
-                  style: TextStyle(
-                    fontFamily: "arial",
-                    fontSize: 16,
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                onPressed: () => Navigator.pushNamed(context, '/register'),
+                child: const Text("¿No estás registrado? Crea una cuenta"),
               ),
             ],
           ),
@@ -83,4 +90,3 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
-
