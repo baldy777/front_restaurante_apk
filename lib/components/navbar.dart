@@ -5,6 +5,7 @@ import 'package:app_movil/pages/productos/pedidos.dart';
 import 'package:app_movil/pages/usuarios/perfil.dart';
 import 'package:app_movil/pages/usuarios/tabla_empleados.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -24,10 +25,33 @@ class _NavbarState extends State<Navbar> {
     UserPerfilVista(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _checkLogin();
+  }
+
+  // Verifica si el usuario está logueado
+  void _checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token == null) {
+      // Redirige al login si no hay token
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  // Cerrar sesión
+  void _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
@@ -44,10 +68,11 @@ class _NavbarState extends State<Navbar> {
             color: Colors.white,
           ),
         ),
-
         centerTitle: true,
+        actions: [
+          IconButton(icon: const Icon(Icons.logout), onPressed: _logout),
+        ],
       ),
-
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -58,8 +83,14 @@ class _NavbarState extends State<Navbar> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Pedidos'),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: 'Menu'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory),
+            label: 'Pedidos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu),
+            label: 'Menu',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Empleados'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
