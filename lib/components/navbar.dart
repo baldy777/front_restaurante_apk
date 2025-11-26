@@ -41,12 +41,22 @@ class _NavbarState extends State<Navbar> {
 
   Future<void> _initialize() async {
     final prefs = await SharedPreferences.getInstance();
+
     final token = prefs.getString('token');
+    print("DEBUG token en navbar: $token");
+
+    final rol = prefs.getString('userRol');
+    print("DEBUG role en navbar: $rol");
+
     if (token == null) {
+      print("DEBUG: no hay token → volver a login");
       Navigator.pushReplacementNamed(context, '/login');
       return;
     }
-    userRole = prefs.getString('rol') ?? "";
+
+    userRole = rol ?? "";
+    print("DEBUG userRole asignado: $userRole");
+
     setState(() {});
   }
 
