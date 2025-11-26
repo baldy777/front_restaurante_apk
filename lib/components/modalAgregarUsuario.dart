@@ -9,7 +9,7 @@ void mostrarModalAgregarUsuario(BuildContext context) {
   final TextEditingController correoCtrl = TextEditingController();
   final TextEditingController contrasenaCtrl = TextEditingController();
 
-  int? rolSeleccionado; // <<< AQUI GUARDAMOS EL ROL
+  int? rolSeleccionado;
 
   final api = UsuarioApiPost();
 
@@ -38,7 +38,6 @@ void mostrarModalAgregarUsuario(BuildContext context) {
                 ),
                 const SizedBox(height: 15),
 
-                // CAMPOS NORMALES
                 TextField(
                   controller: nombreCtrl,
                   decoration: InputDecoration(
@@ -140,7 +139,7 @@ void mostrarModalAgregarUsuario(BuildContext context) {
                             correo: correoCtrl.text,
                             contrasena: contrasenaCtrl.text,
                             telefono: telefonoCtrl.text,
-                            rolId: rolSeleccionado!, // <<< SE ENVÍA EL ROL
+                            rolId: rolSeleccionado!,
                           );
 
                           ScaffoldMessenger.of(context).showSnackBar(
