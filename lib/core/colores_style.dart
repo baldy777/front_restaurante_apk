@@ -16,7 +16,7 @@ class TextoStyle {
     fontWeight: FontWeight.bold,
   );
   static const TextStyle contenido = TextStyle(
-    color: Color(0xFF2E2E2E),
+    color: Color(0xFFFCF5F5),
     fontSize: 18,
     fontFamily: 'arial',
     fontWeight: FontWeight.bold,
