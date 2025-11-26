@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_movil/core/colores_style.dart';
 import 'package:app_movil/pages/main_page.dart';
 import 'package:app_movil/pages/productos/menu.dart';
 import 'package:app_movil/pages/productos/pedidos.dart';
 import 'package:app_movil/pages/usuarios/perfil.dart';
 import 'package:app_movil/pages/usuarios/tabla_empleados.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -16,8 +16,10 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   int _selectedIndex = 0;
+  String userRole = "";
 
-  final List<Widget> _pages = const [
+  // Listas de páginas por rol
+  final List<Widget> _adminPages = const [
     MenuPrincipal(),
     PedidosDiarioVista(),
     MenuVista(),
@@ -25,20 +27,33 @@ class _NavbarState extends State<Navbar> {
     UserPerfilVista(),
   ];
 
+  final List<Widget> _userPages = const [
+    PedidosDiarioVista(),
+    MenuVista(),
+    UserPerfilVista(),
+  ];
+
   @override
   void initState() {
     super.initState();
-    _checkLogin();
+    _initialize();
   }
 
-  // Verifica si el usuario está logueado
-  void _checkLogin() async {
+  Future<void> _initialize() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     if (token == null) {
-      // Redirige al login si no hay token
       Navigator.pushReplacementNamed(context, '/login');
+      return;
     }
+    userRole = prefs.getString('rol') ?? "";
+    setState(() {});
+  }
+
+  void _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   void _onItemTapped(int index) {
@@ -47,15 +62,56 @@ class _NavbarState extends State<Navbar> {
     });
   }
 
-  // Cerrar sesión
-  void _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    Navigator.pushReplacementNamed(context, '/login');
+  BottomNavigationBar _adminNavBar() {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      backgroundColor: ColoresStyle.acento,
+      selectedItemColor: ColoresStyle.encabezado,
+      unselectedItemColor: ColoresStyle.detalles,
+      type: BottomNavigationBarType.fixed,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+        BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Pedidos'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.restaurant_menu),
+          label: 'Menu',
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Empleados'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+      ],
+    );
+  }
+
+  BottomNavigationBar _userNavBar() {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      backgroundColor: ColoresStyle.acento,
+      selectedItemColor: ColoresStyle.encabezado,
+      unselectedItemColor: ColoresStyle.detalles,
+      type: BottomNavigationBarType.fixed,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Pedidos'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.restaurant_menu),
+          label: 'Menu',
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (userRole.isEmpty) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final pages = userRole == "Administrador" ? _adminPages : _userPages;
+    final navBar = userRole == "Administrador" ? _adminNavBar() : _userNavBar();
+    final safeIndex = _selectedIndex.clamp(0, pages.length - 1);
+
     return Scaffold(
       backgroundColor: ColoresStyle.fondo,
       appBar: AppBar(
@@ -73,28 +129,8 @@ class _NavbarState extends State<Navbar> {
           IconButton(icon: const Icon(Icons.logout), onPressed: _logout),
         ],
       ),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: ColoresStyle.acento,
-        selectedItemColor: ColoresStyle.encabezado,
-        unselectedItemColor: ColoresStyle.detalles,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Pedidos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Menu',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Empleados'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
-      ),
+      body: pages[safeIndex],
+      bottomNavigationBar: navBar,
     );
   }
 }
