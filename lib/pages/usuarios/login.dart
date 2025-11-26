@@ -29,7 +29,17 @@ class _LoginFormState extends State<LoginForm> {
 
     if (respuesta != null && respuesta['token'] != null) {
       final prefs = await SharedPreferences.getInstance();
+
       await prefs.setString('token', respuesta['token']);
+
+      if (respuesta['usuario'] != null &&
+          respuesta['usuario']['roles'] != null &&
+          respuesta['usuario']['roles'].isNotEmpty) {
+        await prefs.setString('rol', respuesta['usuario']['roles'][0]);
+      } else {
+        await prefs.setString('rol', 'Usuario');
+      }
+
       Navigator.pushReplacementNamed(context, '/navbar');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
