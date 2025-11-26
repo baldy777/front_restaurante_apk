@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:app_movil/models/usuarios.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class UsuarioApiGet {
-  final String apiUrl = 'http://10.0.2.2:3000/usuarios';
+  final String apiUrl =
+      'http://${dotenv.env['API_IP']}:${dotenv.env['API_PORT']}/usuarios';
 
   Future<List<Usuarios>> obtenerUsuarios() async {
     print("llamado a la api");
@@ -33,7 +35,9 @@ class UsuarioApiPost {
     required String telefono,
     required int rolId,
   }) async {
-    final url = Uri.parse("http://10.0.2.2:3000/usuarios");
+    final url = Uri.parse(
+      "http://${dotenv.env['API_IP']}:${dotenv.env['API_PORT']}/usuarios",
+    );
 
     final body = {
       "nombre": nombre,
