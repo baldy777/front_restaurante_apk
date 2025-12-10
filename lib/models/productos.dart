@@ -23,10 +23,11 @@ class Producto {
 
   factory Producto.fromJson(Map<String, dynamic> json) {
     return Producto(
-      id: json['id'],
-      nombre: json['nombre'],
+      id: json['id'] ?? 0,
+      nombre: json['nombre'] ?? '',
       descripcion: json['descripcion'],
-      precio: (json['precio'] ?? 0).toDouble(),
+      // ⬇️ CORRECCIÓN: Maneja string o number del decimal de PostgreSQL
+      precio: _parsePrecio(json['precio']),
       disponibilidad: json['disponibilidad'],
       imagen: json['imagen'],
       activo: json['activo'] ?? true,
@@ -37,6 +38,17 @@ class Producto {
           ? SubCategoria.fromJson(json['subcategoria'])
           : null,
     );
+  }
+
+  // Método helper para parsear el precio
+  static double _parsePrecio(dynamic precio) {
+    if (precio == null) return 0.0;
+    if (precio is double) return precio;
+    if (precio is int) return precio.toDouble();
+    if (precio is String) {
+      return double.tryParse(precio) ?? 0.0;
+    }
+    return 0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -66,8 +78,8 @@ class Categoria {
 
   factory Categoria.fromJson(Map<String, dynamic> json) {
     return Categoria(
-      id: json['id'],
-      nombre: json['nombre'],
+      id: json['id'] ?? 0,
+      nombre: json['nombre'] ?? '',
       descripcion: json['descripcion'],
       activo: json['activo'] ?? true,
     );
@@ -97,8 +109,8 @@ class SubCategoria {
 
   factory SubCategoria.fromJson(Map<String, dynamic> json) {
     return SubCategoria(
-      id: json['id'],
-      nombre: json['nombre'],
+      id: json['id'] ?? 0,
+      nombre: json['nombre'] ?? '',
       descripcion: json['descripcion'],
       activo: json['activo'] ?? true,
       categoriaId: json['categoria'] is int

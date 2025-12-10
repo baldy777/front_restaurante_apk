@@ -1,6 +1,5 @@
 import 'package:app_movil/core/colores_style.dart';
 import 'package:app_movil/models/productos.dart';
-import 'package:app_movil/models/productos.dart';
 import 'package:app_movil/services/producto_service.dart';
 import 'package:app_movil/services/categoria_service.dart';
 import 'package:app_movil/services/subcategoria_service.dart';
@@ -243,7 +242,7 @@ class _ProductoModalState extends State<ProductoModal> {
 
                 // Categoría
                 DropdownButtonFormField<int>(
-                  value: categoriaSeleccionada,
+                  initialValue: categoriaSeleccionada,
                   decoration: const InputDecoration(
                     labelText: 'Categoría',
                     border: OutlineInputBorder(),
@@ -277,7 +276,7 @@ class _ProductoModalState extends State<ProductoModal> {
 
                 // Subcategoría
                 DropdownButtonFormField<int>(
-                  value: subcategoriaSeleccionada,
+                  initialValue: subcategoriaSeleccionada,
                   decoration: const InputDecoration(
                     labelText: 'Subcategoría',
                     border: OutlineInputBorder(),

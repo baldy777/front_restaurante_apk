@@ -1,17 +1,50 @@
+import 'package:app_movil/models/usuarios.dart';
 import 'package:app_movil/services/usuario_service.dart';
 import 'package:flutter/material.dart';
 
-void mostrarModalAgregarUsuario(BuildContext context) {
-  final TextEditingController nombreCtrl = TextEditingController();
-  final TextEditingController apellidoPaternoCtrl = TextEditingController();
-  final TextEditingController apellidoMaternoCtrl = TextEditingController();
-  final TextEditingController telefonoCtrl = TextEditingController();
-  final TextEditingController correoCtrl = TextEditingController();
-  final TextEditingController contrasenaCtrl = TextEditingController();
+void mostrarModalAgregarUsuario(
+  BuildContext context, {
+  Usuarios? usuario,
+  VoidCallback? onGuardado,
+}) {
+  final TextEditingController nombreCtrl = TextEditingController(
+    text: usuario?.nombre ?? '',
+  );
+  final TextEditingController apellidoPaternoCtrl = TextEditingController(
+    text: usuario?.apellidoPaterno ?? '',
+  );
+  final TextEditingController apellidoMaternoCtrl = TextEditingController(
+    text: usuario?.apellidoMaterno ?? '',
+  );
+  final TextEditingController telefonoCtrl = TextEditingController(
+    text: usuario?.telefono ?? '',
+  );
+  final TextEditingController correoCtrl = TextEditingController(
+    text: usuario?.correo ?? '',
+  );
+  final TextEditingController contrasenaCtrl =
+      TextEditingController(); // Dejar vacío en edición por seguridad
 
+  // Mapeo de rol string a ID (basado en el dropdown)
   int? rolSeleccionado;
+  if (usuario != null) {
+    switch (usuario.rol.toLowerCase()) {
+      case 'administrador':
+        rolSeleccionado = 1;
+        break;
+      case 'usuario':
+        rolSeleccionado = 2;
+        break;
+      case 'cocinero':
+        rolSeleccionado = 3;
+        break;
+      default:
+        rolSeleccionado = null;
+    }
+  }
 
-  final api = UsuarioApiPost();
+  final apiPost = UsuarioApiPost();
+  final apiGet = UsuarioApiGet(); // Para editar
 
   showModalBottomSheet(
     context: context,
@@ -32,9 +65,12 @@ void mostrarModalAgregarUsuario(BuildContext context) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Agregar usuario",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Text(
+                  usuario == null ? "Agregar usuario" : "Editar usuario",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 15),
 
@@ -88,7 +124,9 @@ void mostrarModalAgregarUsuario(BuildContext context) {
                   controller: contrasenaCtrl,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: "Contraseña",
+                    labelText: usuario == null
+                        ? "Contraseña"
+                        : "Nueva Contraseña (opcional)",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -131,43 +169,79 @@ void mostrarModalAgregarUsuario(BuildContext context) {
                           return;
                         }
 
-                        try {
-                          final nuevoUsuario = await api.crearUsuario(
-                            nombre: nombreCtrl.text,
-                            apellidoPaterno: apellidoPaternoCtrl.text,
-                            apellidoMaterno: apellidoMaternoCtrl.text,
-                            correo: correoCtrl.text,
-                            contrasena: contrasenaCtrl.text,
-                            telefono: telefonoCtrl.text,
-                            rolId: rolSeleccionado!,
+                        // Validar campos obligatorios
+                        if (nombreCtrl.text.isEmpty ||
+                            apellidoPaternoCtrl.text.isEmpty ||
+                            apellidoMaternoCtrl.text.isEmpty ||
+                            telefonoCtrl.text.isEmpty ||
+                            correoCtrl.text.isEmpty ||
+                            (usuario == null && contrasenaCtrl.text.isEmpty)) {
+                          // Contraseña obligatoria solo en creación
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Completa todos los campos obligatorios",
+                              ),
+                            ),
                           );
+                          return;
+                        }
+
+                        try {
+                          if (usuario == null) {
+                            // Agregar nuevo usuario
+                            await apiPost.crearUsuario(
+                              nombre: nombreCtrl.text,
+                              apellidoPaterno: apellidoPaternoCtrl.text,
+                              apellidoMaterno: apellidoMaternoCtrl.text,
+                              correo: correoCtrl.text,
+                              contrasena: contrasenaCtrl.text,
+                              telefono: telefonoCtrl.text,
+                              rolId: rolSeleccionado!,
+                            );
+                          } else {
+                            // Editar usuario existente
+                            final usuarioData = {
+                              "nombre": nombreCtrl.text,
+                              "apellidoPaterno": apellidoPaternoCtrl.text,
+                              "apellidoMaterno": apellidoMaternoCtrl.text,
+                              "telefono": telefonoCtrl.text,
+                              "correo": correoCtrl.text,
+                              "rolesIds": [rolSeleccionado!], // Actualizar rol
+                            };
+                            if (contrasenaCtrl.text.isNotEmpty) {
+                              usuarioData["contrasena"] =
+                                  contrasenaCtrl.text; // Solo si se cambió
+                            }
+                            await apiGet.actualizarUsuario(
+                              usuario.id,
+                              usuarioData,
+                            );
+                          }
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text(
-                                "Usuario agregado correctamente",
+                              content: Text(
+                                usuario == null
+                                    ? "Usuario agregado correctamente"
+                                    : "Usuario actualizado correctamente",
                               ),
                               backgroundColor: Colors.green,
-                              behavior: SnackBarBehavior
-                                  .floating, // Hace que no esté pegado al bottom
-                              margin: const EdgeInsets.fromLTRB(
-                                20,
-                                20,
-                                20,
-                                0,
-                              ), // Margen superior
-                              duration: const Duration(
-                                seconds: 2,
-                              ), // Opcional: duración del mensaje
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
 
+                          onGuardado?.call(); // Refrescar la vista
                           Navigator.pop(context);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Error: $e"),
                               backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                             ),
                           );
                         }

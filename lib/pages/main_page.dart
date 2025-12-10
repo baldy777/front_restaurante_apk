@@ -30,71 +30,76 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
             const SizedBox(height: 20),
 
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1,
-                children: estadisticas.entries.map((entry) {
-                  Color cardColor;
-                  IconData iconData;
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: estadisticas.entries.map((entry) {
+                    Color cardColor;
+                    IconData iconData;
 
-                  switch (entry.key) {
-                    case "Pedidos Realizados":
-                      cardColor = Colors.green;
-                      iconData = Icons.check_circle;
-                      break;
-                    case "Pedidos en Espera":
-                      cardColor = Colors.orange;
-                      iconData = Icons.access_time;
-                      break;
-                    case "Pedidos Cancelados":
-                      cardColor = Colors.red;
-                      iconData = Icons.cancel;
-                      break;
-                    case "Total Ventas (Bs)":
-                      cardColor = Colors.blue;
-                      iconData = Icons.attach_money;
-                      break;
-                    default:
-                      cardColor = Colors.grey;
-                      iconData = Icons.info;
-                  }
+                    switch (entry.key) {
+                      case "Pedidos Realizados":
+                        cardColor = Colors.green;
+                        iconData = Icons.check_circle;
+                        break;
+                      case "Pedidos en Espera":
+                        cardColor = Colors.orange;
+                        iconData = Icons.access_time;
+                        break;
+                      case "Pedidos Cancelados":
+                        cardColor = Colors.red;
+                        iconData = Icons.cancel;
+                        break;
+                      case "Total Ventas (Bs)":
+                        cardColor = Colors.blue;
+                        iconData = Icons.attach_money;
+                        break;
+                      default:
+                        cardColor = Colors.grey;
+                        iconData = Icons.info;
+                    }
 
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(iconData, size: 40, color: cardColor),
-                          const SizedBox(height: 10),
-                          Text(
-                            entry.key,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                    return SizedBox(
+                      width: (MediaQuery.of(context).size.width - 44) / 2,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(iconData, size: 40, color: cardColor),
+                              const SizedBox(height: 10),
+                              Text(
+                                entry.key,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                entry.value.toString(),
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: cardColor,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 6),
-                          Text(
-                            entry.value.toString(),
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: cardColor,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ],
